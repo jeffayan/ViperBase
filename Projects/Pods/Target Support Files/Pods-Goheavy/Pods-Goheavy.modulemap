@@ -1,0 +1,6 @@
+framework module Pods_Goheavy {
+  umbrella header "Pods-Goheavy-umbrella.h"
+
+  export *
+  module * { export * }
+}
