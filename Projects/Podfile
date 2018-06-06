@@ -8,6 +8,8 @@ target 'Goheavy' do
     pod 'Alamofire'
     pod 'GoogleMaps'
     pod 'GooglePlaces'
+    pod 'REFrostedViewController', '~> 2.4'
+    pod 'IQKeyboardManagerSwift'
 
   target 'GoheavyTests' do
     inherit! :search_paths

@@ -9,9 +9,11 @@
 import UIKit
 import CoreData
 import GoogleMaps
+import REFrostedViewController
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDelegate {
 
     var window: UIWindow?
 
@@ -19,12 +21,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         SetGoogleMapKey()
+       
         setLocalization(language: Language.english)
         
         let navigationController = Router.setWireFrame()
-        //        navigationController.isNavigationBarHidden = true
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
+         IQKeyboardManager.shared.enable = true
+        
+        //Loading Initial Screen:
+        let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        
+        
+
+        let menucontroller = mainStoryboard.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
+        let frostedViewController = REFrostedViewController(contentViewController: navigationController, menuViewController: menucontroller)
+        frostedViewController?.direction = REFrostedViewControllerDirection.left
+        frostedViewController?.liveBlurBackgroundStyle = REFrostedViewControllerLiveBackgroundStyle.dark
+        frostedViewController?.liveBlur = true
+        frostedViewController?.delegate = self
+        self.window?.rootViewController = frostedViewController
+        
         
         
         

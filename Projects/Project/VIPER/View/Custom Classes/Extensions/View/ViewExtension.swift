@@ -61,6 +61,8 @@ enum Direction {
     
 }
 
+fileprivate var blurEffectViewGlobal : UIVisualEffectView?
+
 extension UIView {
     
   
@@ -239,7 +241,7 @@ extension UIView {
             return UIColor(cgColor: self.layer.borderColor ?? UIColor.clear.cgColor)
         }
         set(newValue) {
-            self.layer.borderColor = borderColor.cgColor
+            self.layer.borderColor = newValue.cgColor
         }
         
     }
@@ -353,6 +355,40 @@ extension UIView {
         customLayer.shadowRadius = radius
         
         
+    }
+  
+    
+    
+    func addBlurview(with style : UIBlurEffectStyle = .dark, on completion : @escaping (()->Void)) {
+        
+        let blurEffect = UIBlurEffect(style: style)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+       // blurEffectView.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
+        blurEffectView.frame = self.bounds
+       // blurEffectView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.addSubview(blurEffectView)
+        
+        let transition = CATransition()
+        transition.duration = 1
+        transition.type = kCATransitionFade
+        //transition.subtype = kCATransitionFade
+        blurEffectView.layer.add(transition, forKey: kCATransition)
+        blurEffectViewGlobal = blurEffectView
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            completion()
+        }
+    }
+    
+    func removeBlurView() {
+        
+        let transition = CATransition()
+        transition.duration = 0.3
+        transition.type = kCATransitionFade
+        blurEffectViewGlobal?.layer.add(transition, forKey: kCATransition)
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
+            blurEffectViewGlobal?.removeFromSuperview()
+        }
     }
     
     //MARK:- Make View Round
