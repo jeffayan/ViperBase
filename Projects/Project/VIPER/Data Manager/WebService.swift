@@ -41,8 +41,8 @@ class Webservice : PostWebServiceProtocol {
         self.completion = completion
         
         setCrashLog(base: api) // Setting crash log
-        
-        guard Reachability(hostname: baseUrl)?.connection != .none else {  // Internet not available
+    
+        guard Reachability(hostname: baseUrl)?.connection == .wifi || Reachability(hostname: baseUrl)?.connection == .cellular else {  // Internet not available
             interactor?.on(api: api, error: CustomError(description: ErrorMessage.list.notReachable, code : StatusCode.notreachable.rawValue))
             return
         }
