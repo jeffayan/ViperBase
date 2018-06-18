@@ -85,19 +85,19 @@ extension MenuViewController : UITableViewDataSource,UITableViewDelegate {
         if(indexPath.row != 0){
             var ContentViewCoantroller = UIViewController()
             if(indexPath.row == 1){  //profile
-                ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
+                //ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
             }else if(indexPath.row == 2){  //MyOrders
-                ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "MyOrderViewController") as! MyOrderViewController
+                //ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "MyOrderViewController") as! MyOrderViewController
             }else if(indexPath.row == 3){ //Address
-                ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "AddressLeftMenuViewController") as! AddressLeftMenuViewController
+               // ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "AddressLeftMenuViewController") as! AddressLeftMenuViewController
             }else if(indexPath.row == 4){ //Rewards
              
-               ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "RewardTableViewController") as! RewardTableViewController
+               //ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "RewardTableViewController") as! RewardTableViewController
                 
             }else if indexPath.row == 5 { //share
-                ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "ShareViewController") as! ShareViewController
+                //ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "ShareViewController") as! ShareViewController
             }else { //logout
-                ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "SignInTableViewController") as! SignInTableViewController
+                //ContentViewCoantroller = self.storyboard?.instantiateViewController(withIdentifier: "SignInTableViewController") as! SignInTableViewController
             }
             
             let navigation = UINavigationController.init(rootViewController: ContentViewCoantroller)  //set Navigation

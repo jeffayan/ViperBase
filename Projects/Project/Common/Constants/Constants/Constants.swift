@@ -172,6 +172,14 @@ struct Keys {
     let accessToken = "access_token"
     let latitude = "latitude"
     let lontitude = "lontitude"
+    let coOrdinates = "coOrdinates"
+    let firstName = "firstName"
+    let lastName = "lastName"
+    let picture = "picture"
+    let email = "email"
+    let mobile = "mobile"
+    let serviceType = "serviceType"
+    let seriviceId = "serviceId"
     
 }
 
@@ -215,6 +223,15 @@ enum tripType: String {
     case Business = "Besiness"
     case Personal = "Personal"
 }
+
+enum defaultSystemSound : Float {
+    case peek = 1519
+    case pop = 1520
+    case cancelled = 1521
+    case tryAgain = 1102
+    case Failed = 1107
+}
+
 
 
 
