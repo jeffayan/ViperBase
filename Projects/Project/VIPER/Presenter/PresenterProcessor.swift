@@ -19,11 +19,11 @@ class PresenterProcessor {
         
     }
     
-    func signUpAuth(data: Data)-> SignUpMdel?{
-        
-        
-        return data.getDecodedObject(from: SignUpMdel.self)
-    }
+//    func signUpAuth(data: Data)-> SignUpMdel?{
+//        
+//        
+//        return data.getDecodedObject(from: SignUpMdel.self)
+//    }
 //
 //    func login(data: Data)-> loginModel? {
 //        

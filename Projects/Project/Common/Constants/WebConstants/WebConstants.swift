@@ -23,5 +23,6 @@ struct WebConstants {
     let access_token = "access_token"
     let CFBundleShortVersionString = "CFBundleShortVersionString"
     let picture = "picture"
+     let bearer = "Bearer "
     
 }

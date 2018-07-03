@@ -154,7 +154,7 @@ protocol PostViewProtocol : class {
     
     
     func onError(api : Base, message : String, statusCode code : Int)
-    func getAuth(api: Base, data: SignUpMdel?)
+    //func getAuth(api: Base, data: SignUpMdel?)
 //    
 //    func getLogin(api: Base, data: loginModel?)
 //    

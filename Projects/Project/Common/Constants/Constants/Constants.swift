@@ -46,6 +46,7 @@ struct Constants {
     containing Lorem Ipsum passages, and more recently with desktop publishing
     software like Aldus PageMaker including versions of Lorem Ipsum
     """
+    let cannotMakeCallAtThisMoment = "Cannot make call at this moment"
     let emailPlaceHolder = "name@example.com"
     let email = "Email"
     let iNeedTocreateAnAccount = "I need to create an account"
@@ -103,52 +104,7 @@ struct Constants {
     let loginSucess = "Login Sucessfully"
     
     
-//MARK:- Invide referral page
-    
-    let title = "Invide Refreral"
-    let referYourFriend = "Refer your friends to drive!"
-    let givenFreeRide = "Given the free ride by reffering the invide code worth 10BCM"
-    let shareYourCode = "Share your Invide code"
-    let refferalEarning = "Refferal Earning"
-    let totalMembers = "Total Members"
-    let invideFriends = "INVITE FRIENDS"
-    
-    
-//MARK:- Summary page
-    
-    let totalNoOfRides = "TOTAL NO OF RIDES"
-    let revenue = "REVENUE"
-    let schueduleRides = "NO OF SCHEDULED RIDES"
-    let cancelRides = "CANCELLED RIDES"
-    
-//MARK:- Document page
-    
-    let vehicleRegistration = "Vehicle Registration"
-    let legalStatus = "Legal Status"
-    let drivingAbstarct = "Driving Abstarct"
-    let criminalRecord = "Criminal Record"
-    let submit = "SUBMIT"
-    let documents = "DOCUMENTS"
-    
-//MARK:- yourTrip Page
-    
-    let yourtrips = "Your trips"
-    let past = "Past"
-    let upcomming = "Upcomming"
-    
-    //MARK:- user invoice page
-    
-    let bookingId = "Booking ID"
-    let distancetravelled = "Distance travelled"
-    let timetaken = "Time Taken"
-    let baseFare = "Base Fare"
-    let distanceFare  = "Distance Fare"
-    let tax = "Tax"
-    let tips = "Tips"
-    let total = "Total"
-    let invoice = "Invoice"
-    let cash = "Cash"
-    let payNow = "PAY NOW"
+
     
     
 }
@@ -183,12 +139,8 @@ struct Keys {
     
 }
 
-//ENUM STATUS
 
-enum Status : String {
-    case ONLINE = "ONLINE"
-    case OFFLINE = "OFFLINE"
-}
+
 
 
 // Date Formats
@@ -219,10 +171,7 @@ enum Language : String {
     
 }
 
-enum tripType: String {
-    case Business = "Besiness"
-    case Personal = "Personal"
-}
+
 
 enum defaultSystemSound : Float {
     case peek = 1519

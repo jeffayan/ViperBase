@@ -466,7 +466,8 @@ func makeCall(phoneNumber: String? ){
     if let providerNumber = phoneNumber, let url = URL(string: "tel://\(providerNumber)"), UIApplication.shared.canOpenURL(url) {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     } else {
-        UIScreen.main.focusedView?.make(toast: Constants.string.cannotMakeCallAtThisMoment.localize())
+        UIScreen.main.focusedView?.make(toast:
+        Constants.string.cannotMakeCallAtThisMoment.localize())
     }
 }
 
