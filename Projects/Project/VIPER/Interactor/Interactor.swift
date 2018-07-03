@@ -45,7 +45,7 @@ extension Interactor : PostInteractorOutputProtocol {
         
         switch api {
         case .signUp:
-            self.presenter?.SendAuth(api: api, data: response)
+            //self.presenter?.SendAuth(api: api, data: response)
             break
 
         default :

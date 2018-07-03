@@ -132,7 +132,7 @@ protocol PostPresenterOutputProtocol : class {
     
     func onError(api : Base, error : CustomError)
    
-    func SendAuth(api: Base, data: Data)
+  //  func SendAuth(api: Base, data: Data)
 //    
 //    func sendlogin(api: Base, data: Data)
 //    
@@ -185,7 +185,7 @@ extension PostViewProtocol {
         
     }
     
-    func getAuth(api: Base, data: SignUpMdel?){ return }
+   // func getAuth(api: Base, data: SignUpMdel?){ return }
 //
 //    func getLogin(api: Base, data: loginModel?){ return }
 //
