@@ -42,7 +42,7 @@ extension GMSMapView {
         DispatchQueue.main.async {
             
             session.dataTask(with: url) { (data, response, error) in
-                
+                print("Inside Polyline ", data != nil)
                 guard data != nil else {
                     return
                 }
@@ -55,7 +55,7 @@ extension GMSMapView {
                         self.drawPath(with: points)
                     }
                     
-                    print(route.routes?.first?.overview_polyline?.points)
+                    // print(route.routes?.first?.overview_polyline?.points)
                     
                 } catch let error {
                     
@@ -75,14 +75,20 @@ extension GMSMapView {
     
     private func drawPath(with points : String){
         
+        print("Drawing Polyline ", points)
+        
         DispatchQueue.main.async {
             
-            let path = GMSPath(fromEncodedPath: points)
+            guard let path = GMSPath(fromEncodedPath: points) else { return }
             let polyline = GMSPolyline(path: path)
             polyline.strokeWidth = 3.0
             polyline.strokeColor = .primary
             polyline.map = self
-            self.animate(toZoom: 12)
+            var bounds = GMSCoordinateBounds()
+            for index in 1...path.count() {
+                bounds = bounds.includingCoordinate(path.coordinate(at: index))
+            }
+            self.animate(with: .fit(bounds))
         }
         
     }

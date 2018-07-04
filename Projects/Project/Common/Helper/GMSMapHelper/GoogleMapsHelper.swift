@@ -12,7 +12,6 @@ import MapKit
 
 typealias LocationCoordinate = CLLocationCoordinate2D
 typealias LocationDetail = (address : String, coordinate :LocationCoordinate)
-typealias LocationDuration = (duration: String, distance: String)
 
 private struct Place : Decodable {
     
@@ -39,42 +38,24 @@ private struct Location : Decodable {
 }
 
 
-//MARK:- distance matrix
-
-private struct Modal : Decodable {
-    
-    var rows : [Row]?
-}
-
-private struct Row : Decodable {
-    var elements : [Element]?
-    
-}
-
-private struct Element : Decodable {
-    var duration : Duration?
-}
-
-private struct Duration : Decodable {
-    var text : String?
-}
-
 
 class GoogleMapsHelper : NSObject {
     
     var mapView : GMSMapView?
     var locationManager : CLLocationManager?
-    private var currentLocation : ((LocationCoordinate)->Void)?
-   
+    private var currentLocation : ((CLLocation)->Void)?
+    
     func getMapView(withDelegate delegate: GMSMapViewDelegate? = nil, in view : UIView, withPosition position :LocationCoordinate = defaultMapLocation, zoom : Float = 15) {
         
-       mapView = GMSMapView(frame: view.frame)
-       mapView?.delegate = delegate
-       mapView?.camera = GMSCameraPosition.camera(withTarget: position, zoom: 15)
-       view.addSubview(mapView!)
+        mapView = GMSMapView(frame: view.frame)
+        self.setMapStyle(to : mapView)
+        mapView?.isMyLocationEnabled = true
+        mapView?.delegate = delegate
+        mapView?.camera = GMSCameraPosition.camera(withTarget: position, zoom: 15)
+        view.addSubview(mapView!)
     }
     
-    func getCurrentLocation(onReceivingLocation : @escaping ((LocationCoordinate)->Void)){
+    func getCurrentLocation(onReceivingLocation : @escaping ((CLLocation)->Void)){
         
         locationManager = CLLocationManager()
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
@@ -88,40 +69,54 @@ class GoogleMapsHelper : NSObject {
     func moveTo(location : LocationCoordinate = defaultMapLocation, with center : CGPoint) {
         
         CATransaction.begin()
-        CATransaction.setAnimationDuration(2)
+        CATransaction.setValue(2, forKey: kCATransactionAnimationDuration)
         CATransaction.setCompletionBlock {
-            self.mapView?.camera = GMSCameraPosition.camera(withTarget: location, zoom: 15)
-            self.mapView?.center = center
+            self.mapView?.animate(to: GMSCameraPosition.camera(withTarget: location, zoom: 15))
         }
         CATransaction.commit()
+        self.mapView?.center = center
+        
     }
-    
+    // Setting Map Style
+    private func setMapStyle(to mapView: GMSMapView?){
+        do {
+            // Set the map style by passing a valid JSON string.
+            if let url = Bundle.main.url(forResource: "Map_style", withExtension: "json") {
+                mapView?.mapStyle = try GMSMapStyle(contentsOfFileURL: url)
+            }else {
+                print("error")
+            }
+            
+        } catch {
+            NSLog("One or more of the map styles failed to load. \(error)")
+        }
+    }
     func getPlaceAddress(from location : LocationCoordinate, on completion : @escaping ((LocationDetail)->())){
         
         /*if !geoCoder.isGeocoding {
-            
-            geoCoder.reverseGeocodeLocation(CLLocation(latitude: location.latitude, longitude: location.longitude)) { (placeMarks, error) in
-                
-                guard error == nil, let placeMarks = placeMarks else {
-                    print("Error in retrieving geocoding \(error?.localizedDescription ?? .Empty)")
-                    return
-                }
-            
-                
-                
-                guard let placemark = placeMarks.first, let address = (placeMarks.first?.addressDictionary!["FormattedAddressLines"] as? Array<String>)?.joined(separator: ","), let coordinate = placemark.location else {
-                    print("Error on parsing geocoding ")
-                    return
-                }
-                
-                
-                completion((address,coordinate.coordinate))
-                
-                print(placeMarks)
-                
-            }
-            
-        } */
+         
+         geoCoder.reverseGeocodeLocation(CLLocation(latitude: location.latitude, longitude: location.longitude)) { (placeMarks, error) in
+         
+         guard error == nil, let placeMarks = placeMarks else {
+         print("Error in retrieving geocoding \(error?.localizedDescription ?? .Empty)")
+         return
+         }
+         
+         
+         
+         guard let placemark = placeMarks.first, let address = (placeMarks.first?.addressDictionary!["FormattedAddressLines"] as? Array<String>)?.joined(separator: ","), let coordinate = placemark.location else {
+         print("Error on parsing geocoding ")
+         return
+         }
+         
+         
+         completion((address,coordinate.coordinate))
+         
+         print(placeMarks)
+         
+         }
+         
+         } */
         
         
         let urlString = "https://maps.googleapis.com/maps/api/geocode/json?latlng=\(location.latitude),\(location.longitude)&key=\(googleMapKey)"
@@ -130,49 +125,20 @@ class GoogleMapsHelper : NSObject {
             print("Error in creating URL Geocoding")
             return
         }
-       
+        
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             
-            if let places = data?.getDecodedObject(from: Place.self),
-                let address = places.results?.first?.formatted_address, let lattitude = places.results?.first?.geometry?.location?.lat, let longitude = places.results?.first?.geometry?.location?.lng {
+            if let places = data?.getDecodedObject(from: Place.self), let address = places.results?.first?.formatted_address, let lattitude = places.results?.first?.geometry?.location?.lat, let longitude = places.results?.first?.geometry?.location?.lng {
                 
                 completion((address, LocationCoordinate(latitude: lattitude, longitude: longitude)))
             }
             
             
-        }.resume()
-        
-    
-        
-    }
-    
-    
-    
-    func getTavelDuration(from location: String, on completion : @escaping ((LocationDuration)->())){
-        
-        let urltsring = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=13.0590,80.254&destinations=13.0732,80.2609&key=AIzaSyAlpDGEYqZS44sI_ffynh5sjm5JsNPPFLg"
-        guard let url = URL(string: urltsring) else {
-            print("Error in creating url")
-            return
-        }
+            }.resume()
         
         
         
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            print(data)
-            
-            if let places = data?.getDecodedObject(from: Modal.self) {
-                
-                print("duarion Value: \(places.rows?.first?.elements?.first?.duration?.text)")
-                completion(("\(places.rows?.first?.elements?.first?.duration?.text)", "ef"))
-                
-            }
-        }
-     
-        .resume()
-    
-    
     }
     
     
@@ -184,8 +150,8 @@ extension GoogleMapsHelper: CLLocationManagerDelegate {
     // Handle incoming location events.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-          print("Location: \(location)")
-          self.currentLocation?(location.coordinate)
+            print("Location: \(location)")
+            self.currentLocation?(location)
         }
         
     }

@@ -26,13 +26,7 @@ class User : NSObject, NSCoding, JSONSerializable {
     var email : String?
     var mobile : String?
     
-    var serviceType : String?
-    var serviceId : Int?
-    
-    
-    
-    
-    init(id : Int?, name : String?, accessToken: String?, latitude: Double?, lontitude: Double?, firstName: String?, lastName : String?, email : String?, phoneNumber: String?,serviceType: String?,serviceId: Int?,picture: String?){
+    init(id : Int?, name : String?, accessToken: String?, latitude: Double?, lontitude: Double?, firstName: String?, lastName : String?, email : String?, phoneNumber: String?,picture: String?){
         
         self.id = id
         self.name = name
@@ -43,8 +37,6 @@ class User : NSObject, NSCoding, JSONSerializable {
         self.lastName = lastName
         self.mobile = phoneNumber
         self.email = email
-        self.serviceType = serviceType
-        self.serviceId = serviceId
         self.picture = picture
         
     }
@@ -52,7 +44,7 @@ class User : NSObject, NSCoding, JSONSerializable {
     convenience
     override init(){
         
-        self.init(id: nil, name: nil, accessToken: nil, latitude: nil, lontitude: nil, firstName: nil, lastName: nil, email: nil, phoneNumber:  nil, serviceType: nil,serviceId: nil, picture: nil)
+        self.init(id: nil, name: nil, accessToken: nil, latitude: nil, lontitude: nil, firstName: nil, lastName: nil, email: nil, phoneNumber:  nil, picture: nil)
     }
     
     
@@ -67,12 +59,10 @@ class User : NSObject, NSCoding, JSONSerializable {
         let lastName = aDecoder.decodeObject(forKey: Keys.list.lastName) as? String
         let email = aDecoder.decodeObject(forKey: Keys.list.email) as? String
         let phoneNumber = aDecoder.decodeObject(forKey: Keys.list.mobile) as? String
-        let serviceType = aDecoder.decodeObject(forKey: Keys.list.serviceType) as? String
-        let serviceId = aDecoder.decodeObject(forKey: Keys.list.seriviceId) as? Int
         let picture = aDecoder.decodeObject(forKey: Keys.list.picture) as? String
         
         
-        self.init(id: id, name: name, accessToken: accessToken, latitude: latitude, lontitude: lontitude, firstName: firstNmae, lastName: lastName, email: email, phoneNumber: phoneNumber, serviceType: serviceType, serviceId : serviceId, picture: picture)
+        self.init(id: id, name: name, accessToken: accessToken, latitude: latitude, lontitude: lontitude, firstName: firstNmae, lastName: lastName, email: email, phoneNumber: phoneNumber, picture: picture)
     }
     
     
@@ -87,8 +77,6 @@ class User : NSObject, NSCoding, JSONSerializable {
         aCoder.encode(self.lastName, forKey: Keys.list.lastName)
         aCoder.encode(self.email, forKey: Keys.list.email)
         aCoder.encodeConditionalObject(self.mobile, forKey: Keys.list.mobile)
-        aCoder.encode(self.serviceType, forKey: Keys.list.serviceType)
-        aCoder.encode(self.serviceId, forKey: Keys.list.seriviceId)
         aCoder.encode(self.picture, forKey: Keys.list.picture)
     }
     

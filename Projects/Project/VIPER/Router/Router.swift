@@ -21,7 +21,7 @@ class Router {
         let interactor : PostInteractorInputProtocol&PostInteractorOutputProtocol = Interactor()
         let webService : PostWebServiceProtocol = Webservice()
       
-        if let view : (PostViewProtocol & UIViewController) = main.instantiateViewController(withIdentifier: Storyboard.Ids.HomePgaeViewController) as? ViewController {
+        if let view : (PostViewProtocol & UIViewController) = main.instantiateViewController(withIdentifier: Storyboard.Ids.HomeViewController) as? ViewController {
             
             presenter.controller = view
             view.presenter = presenter
@@ -34,7 +34,7 @@ class Router {
         interactor.presenter = presenter
         presenter.interactor = interactor
         
-        return retrieveUserData() ? main.instantiateViewController(withIdentifier:  Storyboard.Ids.Navigation) : main.instantiateViewController(withIdentifier: Storyboard.Ids.Navigation)
+        return retrieveUserData() ? main.instantiateViewController(withIdentifier:  Storyboard.Ids.DrawerController) : main.instantiateViewController(withIdentifier: Storyboard.Ids.DrawerController)
     }
     
 }

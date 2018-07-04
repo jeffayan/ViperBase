@@ -34,20 +34,15 @@ enum StatusCode : Int {
 }
 
 
-internal let baseUrl = "http://138.197.3.136/"
 
 enum Base : String{
   
     case signUp = "/api/user/signup"
-    
     case login = "/oauth/token"
-    
+    case logout = "/api/user/logout"
     case resepwd = "/api/provider/profile/password"
-    
     case distanceMarix = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="
-    
     case updateLocation = "api/provider/profile/location"
-    
     case onlineStatus = "/api/provider/profile/available"
    
     init(fromRawValue: String){

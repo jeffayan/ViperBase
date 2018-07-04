@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MessageUI
 
 class Common {
     
@@ -41,59 +42,6 @@ class Common {
   
     }
     
-    class  func datePickerTapped(Textcolor: UIColor, MaxDate:Date, ButtonColor: UIColor,label: UILabel ) {
-        let currentDate = Date()
-        var dateComponents = DateComponents()
-        dateComponents.year = -60
-        let threeMonthAgo = Calendar.current.date(byAdding: dateComponents, to: currentDate)
-        
-        let datePicker = DatePickerDialog(textColor: Textcolor,
-                                          buttonColor: ButtonColor,
-                                          font: UIFont.boldSystemFont(ofSize: 17),
-                                          showCancelButton: true)
-        datePicker.show("DatePickerDialog",
-                        doneButtonTitle: "Done",
-                        cancelButtonTitle: "Cancel",
-                        minimumDate: threeMonthAgo,
-                        maximumDate: nil,
-                        datePickerMode: .date) { (date) in
-                            if let dt = date {
-                                let formatter = DateFormatter()
-                                formatter.dateFormat = "MM/dd/yyyy"
-                               // Button.setTitle(formatter.string(from: dt), for: .normal)
-                                label.text = formatter.string(from: dt)
-                            }
-        }
-    }
-    
-    class  func TimePickerTapped(Textcolor: UIColor, MaxDate:Date ,ButtonColor: UIColor,label : UILabel ) {
-        let currentDate = Date()
-        var dateComponents = DateComponents()
-        dateComponents.year = -60
-        let threeMonthAgo = Calendar.current.date(byAdding: dateComponents, to: currentDate)
-        
-        let datePicker = DatePickerDialog(textColor: Textcolor,
-                                          buttonColor: ButtonColor,
-                                          font: UIFont.boldSystemFont(ofSize: 17),
-                                          showCancelButton: true)
-        datePicker.show("DatePickerDialog",
-                        doneButtonTitle: "Done",
-                        cancelButtonTitle: "Cancel",
-                        minimumDate: nil,
-                        maximumDate: nil,
-                        datePickerMode: .time) { (date) in
-                            if let dt = date {
-                                let formatter = DateFormatter()
-                                formatter.dateFormat = "HH:mm"
-                               // Button.setTitle(formatter.string(from: dt), for: .normal)
-                                label.text = formatter.string(from: dt)
-                            }
-        }
-    }
-    
-    
-    
-    
     
     
     //MARK:- Get Countries from JSON
@@ -123,6 +71,70 @@ class Common {
         tableView.addSubview(rc)
         return rc
         
+    }
+    
+    // MARK:- Set Font
+    
+    class func setFont(to field :Any, isTitle : Bool = false, size : CGFloat = 0) {
+        
+        let customSize = size > 0 ? size : (isTitle ? 16 : 14)
+        
+        switch (field.self) {
+        case is UITextField:
+            (field as? UITextField)?.font = UIFont(name: isTitle ? FontCustom.avenier_Heavy.rawValue : FontCustom.avenier_Medium.rawValue, size: customSize)
+        case is UILabel:
+            (field as? UILabel)?.font = UIFont(name: isTitle ? FontCustom.avenier_Heavy.rawValue : FontCustom.avenier_Medium.rawValue, size: customSize)
+        case is UIButton:
+            (field as? UIButton)?.titleLabel?.font = UIFont(name: isTitle ? FontCustom.avenier_Heavy.rawValue : FontCustom.avenier_Medium.rawValue, size: customSize)
+        case is UITextView:
+            (field as? UITextView)?.font = UIFont(name: isTitle ? FontCustom.avenier_Heavy.rawValue : FontCustom.avenier_Medium.rawValue, size: customSize)
+        default:
+            break
+        }
+    }
+    
+    // MARK:- Make Call
+    class func call(to number : String?) {
+        
+        if let providerNumber = number, let url = URL(string: "tel://\(providerNumber)"), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIScreen.main.focusedView?.make(toast: Constants.string.cannotMakeCallAtThisMoment.localize())
+        }
+        
+    }
+    
+    // MARK:- Send Email
+    class func sendEmail(to mailId : [String], from view : UIViewController & MFMailComposeViewControllerDelegate) {
+        
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = view
+            mail.setToRecipients(mailId)
+            view.present(mail, animated: true)
+        } else {
+            UIScreen.main.focusedView?.make(toast: Constants.string.couldnotOpenEmailAttheMoment.localize())
+        }
+        
+    }
+    
+    // MARK:- Send Message
+    
+    class func sendMessage(to numbers : [String], text : String, from view : UIViewController & MFMessageComposeViewControllerDelegate) {
+        
+        if (MFMessageComposeViewController.canSendText()) {
+            let controller = MFMessageComposeViewController()
+            controller.body = text
+            controller.recipients = numbers
+            controller.messageComposeDelegate = view
+            view.present(controller, animated: true, completion: nil)
+        }
+    }
+    
+    // MARK:- Bussiness Image Url
+    class func getImageUrl (for urlString : String?)->String {
+        
+        return baseUrl+"/storage/"+String.removeNil(urlString)
     }
         
 }

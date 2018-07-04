@@ -12,25 +12,10 @@ import Foundation
 struct Storyboard {
     
     static let Ids = Storyboard()
-    
-    let HomePgaeViewController = "HomePageViewController"
-    let SignInTableViewController = "SignInTableViewController"
-    let SignUpTableViewController = "SignUpTableViewController"
-    let Navigation = "Navigation"
-    let HomePageViewController = "HomePageViewController"
-    let AddAddressViewController  = "AddAddressViewController"
-    let PlaceOrderViewController = "PlaceOrderViewController"
-    let AddNewAddressViewController = "AddNewAddressViewController"
-    let ShareViewController = "ShareViewController"
-    
-    let AddressLeftMenuViewController = "AddressLeftMenuViewController"
-
-    
-    
+    let DrawerController = "DrawerController"
+    let HomeViewController = "HomeViewController"
     
 }
-
-
 
 
 //MARK:- XIB Cell Names

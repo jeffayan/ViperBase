@@ -20,7 +20,7 @@ class GooglePlacesHelper : NSObject {
     // MARK:- Initilaize Fetcher
     
     private func initFetcher() {
-       
+        
         if fetcher == nil {
             self.fetcher = GMSAutocompleteFetcher()
             self.filter = GMSAutocompleteFilter()

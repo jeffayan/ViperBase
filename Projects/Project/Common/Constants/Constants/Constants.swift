@@ -32,89 +32,13 @@ struct Constants {
     let selectSource = "Select Source"
     let camera = "Camera"
     let photoLibrary = "Photo Library"
-    let walkthrough = "Walkthrough"
-    let signIn = "SIGN IN"
-    let signUp = "SIGNUP"
-    let orConnectWithSocial = "Or connect with social"
-    let walkthroughDummy = """
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-     when an unknown printer took a galley of type and scrambled it to make a
-    type specimen book. It has survived not only five centuries, but also the leap
-    into electronic typesetting, remaining essentially unchanged.It
-    was popularised in the 1960s with the release of Letraset sheets
-    containing Lorem Ipsum passages, and more recently with desktop publishing
-    software like Aldus PageMaker including versions of Lorem Ipsum
-    """
-    let cannotMakeCallAtThisMoment = "Cannot make call at this moment"
-    let emailPlaceHolder = "name@example.com"
-    let email = "Email"
-    let iNeedTocreateAnAccount = "I need to create an account"
-    let whatsYourEmailAddress = "What's your Email Address?"
-    let welcomeBackPassword = "Welcome back, sign in to continue"
-    let enterPassword = "Enter Password"
-    let password = "Password"
-    let iForgotPassword = "I forgot my password"
-    let enterYourMailIdForrecovery = "Enter your mail ID for recovery"
-    let chooseAnAccount = "Choose an account"
-    let facebook = "Facebook"
-    let google = "Google"
-    let payment = "Payment"
-    let yourTrips = "Your Trips"
-    let Earnings = "Earnings"
-    let Summary = "Summary"
-    let document = "Document"
-    let passbook = "Passbook"
-    let settings = "Settings"
-    let help = "Help"
-    let share = "Share"
-    let inviteReferral = "Invite Referral"
-    let faqSupport = "FAQ Support"
-    let termsAndConditions = "Terms and Conditions"
-    let privacyPolicy = "Privacy Policy"
     let logout = "Logout"
-    let firsrName = "FirstName"
-    let lastName = "LastName"
-    let phoneNumber = "PhoneNumber"
-    let vehicleMake = "VehicleMake"
-    let vehicleModel = "VehicleModel"
-    let vehicleYear = "VehicleYear"
-    
-    let vehicleColor = "VehicleColor"
-    let vehiclePlateNumber = "VehiclePlateNumber"
-    let city = "City"
-    let carcategory = "Car Category"
-    let referralCode = "Referral Code"
-    let signUpNavTitle = "Enter the Details"
-    let notes = "Note: Please enter the OTP sent to your registered email address"
-    let enterOTP = "Enter OTP"
-    let enterNewPwd = "New Password"
-    let oldPassword = "Old Password"
-    let resetPassword = "Reset password"
-    
-    let ConfirmPassword = "Confirm Password"
-    let country = "Country"
-    let timeZone = "Time Zone"
-    let business = "BUsiness"
-    let personal = "Personal"
-    
-    
-//MARK:- sucess messages
-    
-    let loginSucess = "Login Sucessfully"
-    
-    
+    let cannotMakeCallAtThisMoment = "Cannot make call at this moment"
+    let couldnotOpenEmailAttheMoment = "Could not open Email at the moment."
+    let areYouSureWantToLogout = "Are you want to logout?"
 
-    
-    
+
 }
-
-struct constantsArrry {
-    static let array = constantsArrry()
-    
-    let invoiceArray = ["Booking ID","Distance travelled","Time Taken","Base Fare","Distance Fare","Tax","Tips","Total"]
-}
-
 
 //Defaults Keys
 
@@ -134,8 +58,6 @@ struct Keys {
     let picture = "picture"
     let email = "email"
     let mobile = "mobile"
-    let serviceType = "serviceType"
-    let seriviceId = "serviceId"
     
 }
 

@@ -9,43 +9,23 @@
 import UIKit
 import CoreData
 import GoogleMaps
-import REFrostedViewController
 import IQKeyboardManagerSwift
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        SetGoogleMapKey()
-       
+
+        setGoogleMapKey()
         setLocalization(language: Language.english)
-        
         let navigationController = Router.setWireFrame()
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-         IQKeyboardManager.shared.enable = true
-        
-        //Loading Initial Screen:
-        let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        
-        
-
-        let menucontroller = mainStoryboard.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
-        let frostedViewController = REFrostedViewController(contentViewController: navigationController, menuViewController: menucontroller)
-        frostedViewController?.direction = REFrostedViewControllerDirection.left
-        frostedViewController?.liveBlurBackgroundStyle = REFrostedViewControllerLiveBackgroundStyle.dark
-        frostedViewController?.liveBlur = true
-        frostedViewController?.delegate = self
-        self.window?.rootViewController = frostedViewController
-        
-        
-        
-        
+        self.registerPush(forApp: application)
         return true
     }
 
@@ -74,16 +54,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDe
     }
     
     
-    private func SetGoogleMapKey(){
+    private func setGoogleMapKey(){
         
         GMSServices.provideAPIKey(googleMapKey)
         
     }
     
+    // MARK:- Register Push
+    private func registerPush(forApp application : UIApplication){
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options:[.alert, .sound]) { (granted, error) in
+            
+            if granted {
+                DispatchQueue.main.async {
+                    application.registerForRemoteNotifications()
+                }
+            }
+        }
+    }
     
-    
-    
-
     // MARK: - Core Data stack
 
     lazy var persistentContainer: NSPersistentContainer = {
@@ -93,7 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDe
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
         */
-        let container = NSPersistentContainer(name: "Goheavy")
+        let container = NSPersistentContainer(name: "Model")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
@@ -129,5 +118,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDe
         }
     }
 
+}
+
+extension AppDelegate {
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // Pass device token to auth
+        // Auth.auth().setAPNSToken(deviceToken, type: AuthAPNSTokenType.sandbox)
+        // Messaging.messaging().apnsToken = deviceToken
+        deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        print("Apn Token ", deviceToken.map { String(format: "%02.2hhx", $0) }.joined())
+    }
+    
+    func application(_ application: UIApplication,
+                     didReceiveRemoteNotification notification: [AnyHashable : Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("Notification  :  ", notification)
+        
+        completionHandler(.newData)
+        
+    }
+    
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        
+        print("Error in Notification  \(error.localizedDescription)")
+    }
+    
+    
 }
 
