@@ -16,11 +16,9 @@ protocol PostWebServiceProtocol : class {
     
     var completion : ((CustomError?, Data?)->())? {get set}
     
-    func retrieve(api : Base, url : String?, data : Data?, imageData: [String : Data]?, paramters : [String : Any]?, type : HttpType, completion : ((CustomError?, Data?)->())?)
+    func retrieve(api : Base, url : String?, data : Data?, imageData: [String : Data]?, type : HttpType, completion : ((CustomError?, Data?)->())?)
     
 }
-
-
 
 
 //MARK:- Interator Input
@@ -29,9 +27,9 @@ protocol PostInteractorInputProtocol : class {
     
     var webService : PostWebServiceProtocol? {get set}
     
-    func send(api : Base, data : Data?, paramters : [String : Any]?, type : HttpType)
+    func send(api : Base, data : Data?, type : HttpType)
     
-    func send(api : Base, imageData : [String : Data]?, parameters: [String : Any]?)
+    func send(api : Base, imageData : [String : Data]?, data : Data?)
     
     func send(api : Base, url : String, data : Data?, type : HttpType)
     
@@ -70,7 +68,7 @@ protocol PostPresenterInputProtocol : class {
      @param parameters paramters to be send in request
      */
     
-    func get(api : Base, parameters: [String : Any]?)
+    func get(api : Base, data : Data?)
     
     /**
      Send GET Request
@@ -86,7 +84,7 @@ protocol PostPresenterInputProtocol : class {
      @param imageData : Image to be sent in multipart
      @param parameters : params to be sent in multipart
      */
-    func post(api : Base, imageData : [String : Data]?, parameters: [String : Any]?)
+    func post(api : Base, imageData : [String : Data]?, data : Data?)
     
     /**
      Send put Request
@@ -128,20 +126,7 @@ protocol PostPresenterInputProtocol : class {
 
 protocol PostPresenterOutputProtocol : class {
     
-  
-    
     func onError(api : Base, error : CustomError)
-   
-  //  func SendAuth(api: Base, data: Data)
-//    
-//    func sendlogin(api: Base, data: Data)
-//    
-//    func sendResetPassword(api: Base, data: Data)
-//    
-//    func sendLocationupadate(api: Base, date: Data)
-//    
-//    func sendOnlineStatus(api: Base, data: Data)
-
     
 }
 
@@ -152,19 +137,8 @@ protocol PostViewProtocol : class {
     
     var presenter : PostPresenterInputProtocol? {get set}
     
-    
     func onError(api : Base, message : String, statusCode code : Int)
-    //func getAuth(api: Base, data: SignUpMdel?)
-//    
-//    func getLogin(api: Base, data: loginModel?)
-//    
-//    func getResetpassword(api: Base, data: resetPasswordModel?)
-//    
-//    func getLoactionUpadate(api: Base, data: updateLocationModel?)
-//    
-//    func getOnlineStatus(api: Base, data: OnlinestatusModelResponse?)
-    
-    
+
 }
 
 //MARK: - View
@@ -184,22 +158,22 @@ extension PostViewProtocol {
         }
         
     }
-    
-   // func getAuth(api: Base, data: SignUpMdel?){ return }
-//
-//    func getLogin(api: Base, data: loginModel?){ return }
-//
-//    func getResetpassword(api: Base, data: resetPasswordModel?) { return }
-//
-//    func getLoactionUpadate(api: Base, data: updateLocationModel?){ return }
-//
-//    func getOnlineStatus(api: Base, data: OnlinestatusModelResponse?) { return }
-    
-    
-    
 }
 
-
+// MARK:- View Structure
+protocol UIViewStructure {
+    //Responsible for initialization of all variables and data to be initiated only once
+    func initalLoads()
+    
+    // All View Localization to be completely implemented here
+    func localize()
+    
+    // Font Design Color and font handling to here implemented here
+    func design()
+    
+    // All Constraint and size handling to be written here
+    func layouts()
+}
 
 
 

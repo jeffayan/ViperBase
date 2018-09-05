@@ -647,7 +647,7 @@
 				084B34AF20B0307800B79318 /* Application */,
 				084B34AC20B0305B00B79318 /* View */,
 				084B34A920B0304400B79318 /* TableView */,
-				084B34A620B0302900B79318 /* NavigationBart */,
+				084B34A620B0302900B79318 /* NavigationBar */,
 				084B34A320B02FFA00B79318 /* ViewControllers */,
 				084B34A020B02FDD00B79318 /* Images */,
 				084B349D20B02FC300B79318 /* String */,
@@ -706,12 +706,12 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		084B34A620B0302900B79318 /* NavigationBart */ = {
+		084B34A620B0302900B79318 /* NavigationBar */ = {
 			isa = PBXGroup;
 			children = (
 				084B34A720B0303C00B79318 /* NavigationBar.swift */,
 			);
-			path = NavigationBart;
+			path = NavigationBar;
 			sourceTree = "<group>";
 		};
 		084B34A920B0304400B79318 /* TableView */ = {
@@ -759,7 +759,6 @@
 			children = (
 				084B34CA20B031DF00B79318 /* imageView */,
 				084B34C320B0314F00B79318 /* TextFields */,
-				084B34C220B0312500B79318 /* Gradien View */,
 				084B34BF20B0310E00B79318 /* View */,
 				084B34BC20B030F700B79318 /* Button */,
 				084B34B920B030E400B79318 /* label */,
@@ -789,13 +788,6 @@
 				084B34C020B0311A00B79318 /* View.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		084B34C220B0312500B79318 /* Gradien View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Gradien View";
 			sourceTree = "<group>";
 		};
 		084B34C320B0314F00B79318 /* TextFields */ = {

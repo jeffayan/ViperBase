@@ -19,17 +19,13 @@ class Webservice : PostWebServiceProtocol {
     
     //MARK:- SEND WEBSERVICE REQUEST TO BACKEND
     
-    func retrieve(api: Base,url : String?, data: Data?, imageData: [String:Data]?, paramters: [String : Any]?, type: HttpType, completion : ((CustomError?, Data?)->())?) {
+    func retrieve(api: Base,url : String?, data: Data?, imageData: [String:Data]?, type: HttpType, completion : ((CustomError?, Data?)->())?) {
         
-        print("To url ", api.rawValue)
+        print("To url ", api)
         
         if data != nil {
             
             print("\nAt Webservice Request  ",String(data: data!, encoding: .utf8) ?? .Empty)
-        }
-        if paramters != nil {
-            
-            print("\nAt Webservice Request  ",paramters!)
         }
         
         if imageData != nil {
@@ -42,12 +38,8 @@ class Webservice : PostWebServiceProtocol {
         
         setCrashLog(base: api) // Setting crash log
         
-        let reach = Reachability.init(hostname: baseUrl)
-        
-        guard reach?.connection == .wifi || reach?.connection == .cellular else {  // Internet not available
-            NotificationCenter.default.post(name: .reachabilityChanged, object: nil)
-            self.interactor?.on(api: api, error: CustomError(description: ErrorMessage.list.notReachable, code : StatusCode.notreachable.rawValue))
-            self.completion?(CustomError(description: ErrorMessage.list.notReachable, code : StatusCode.notreachable.rawValue), nil)
+        guard Reachability(hostname: baseUrl)?.connection == .cellular || Reachability(hostname: baseUrl)?.connection == .wifi else {  // Internet not available
+            interactor?.on(api: api, error: CustomError(description: ErrorMessage.list.notReachable.localize(), code : StatusCode.notreachable.rawValue))
             return
         }
         
@@ -55,15 +47,15 @@ class Webservice : PostWebServiceProtocol {
         // If ImageData is available send in multipart
         if imageData != nil {
             
-            self.send(api: api, imageData: imageData, parameters: paramters)
+            self.send(api: api, imageData: imageData, data: data)
             
         } else if url != nil { // send normal GET POST call
             
-            self.send(api: api,url : url!, data: data, parameters: paramters, type: type)
+            self.send(api: api, url: url, data: data, type: type)
             
         } else {
             
-            self.send(api: api,url : nil, data: data, parameters: paramters, type: type)
+            self.send(api: api,url : nil, data: data, type: type)
         }
         
     }
@@ -78,8 +70,8 @@ class Webservice : PostWebServiceProtocol {
         let apiType = Base.valueFor(Key: apiKey)
         
         guard let response = response else {
-            self.completion?(CustomError(description: ErrorMessage.list.serverError, code : StatusCode.notreachable.rawValue), nil)
-            self.interactor?.on(api: apiType, error: CustomError(description: ErrorMessage.list.serverError, code : StatusCode.notreachable.rawValue))
+            self.completion?(CustomError(description: ErrorMessage.list.serverError.localize(), code : StatusCode.notreachable.rawValue), nil)
+            self.interactor?.on(api: apiType, error: CustomError(description: ErrorMessage.list.serverError.localize(), code : StatusCode.notreachable.rawValue))
             return
         }
         
@@ -92,7 +84,7 @@ class Webservice : PostWebServiceProtocol {
                 
                 message = error.error
             }
-            self.completion?(CustomError(description: ErrorMessage.list.serverError, code: (response.response?.statusCode) ?? StatusCode.unAuthorized.rawValue), nil)
+            
             forceLogout(with: message) // Force Logout user by clearing all cache
             
             
@@ -137,7 +129,7 @@ class Webservice : PostWebServiceProtocol {
                 }
                 
                 if errMessage.isEmpty {
-                    errMessage = ErrorMessage.list.serverError
+                    errMessage = ErrorMessage.list.serverError.localize()
                 }
                 
                 self.completion?(CustomError(description:errMessage, code: response.response?.statusCode ?? StatusCode.ServerError.rawValue), nil)
@@ -158,8 +150,8 @@ class Webservice : PostWebServiceProtocol {
             
         }  else { // Validation for Exceptional Cases
             
-            self.completion?(CustomError(description: ErrorMessage.list.serverError, code: StatusCode.ServerError.rawValue), nil)
-            self.interactor?.on(api: apiType, error: CustomError(description: ErrorMessage.list.serverError, code: StatusCode.ServerError.rawValue))
+            self.completion?(CustomError(description: ErrorMessage.list.serverError.localize(), code: StatusCode.ServerError.rawValue), nil)
+            self.interactor?.on(api: apiType, error: CustomError(description: ErrorMessage.list.serverError.localize(), code: StatusCode.ServerError.rawValue))
             
             
         }
@@ -218,7 +210,7 @@ class Webservice : PostWebServiceProtocol {
     
     // MARK:- Send Api Normal Request
     
-    func send(api: Base, url appendingUrl : String?, data: Data?, parameters : [String : Any]?, type : HttpType) {
+    func send(api: Base, url appendingUrl : String?, data: Data?, type : HttpType) {
         
         var url : URL?
         var urlRequest : URLRequest?
@@ -228,24 +220,13 @@ class Webservice : PostWebServiceProtocol {
             
         case .GET:
             
-            if appendingUrl != nil {
-                
-                getParams = appendingUrl!
-                
-            }else {
-                
-                for (index,param) in (parameters ?? [:]).enumerated() {
-                    
+            if data != nil, let dictionary = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary, dictionary != nil {
+                for (index,param) in (dictionary!.enumerated()) {
                     getParams.append((index == 0 ? "?" : "&")+"\(param.key)=\(param.value)")
-                    
                 }
-                
-                getParams = api.rawValue+getParams
             }
             
-            
-            
-            
+            getParams = appendingUrl != nil ? appendingUrl! : api.rawValue+getParams
             
         case .POST:
             
@@ -262,8 +243,7 @@ class Webservice : PostWebServiceProtocol {
             
         }
         
-        
-        url = URL(string: baseUrl+getParams ) // Setting Base url as FCM incase of FCM Push
+        url = URL(string: baseUrl+getParams) // Setting Base url as FCM incase of FCM Push
         
         if url != nil {
             urlRequest = URLRequest(url: url!)
@@ -274,11 +254,10 @@ class Webservice : PostWebServiceProtocol {
         
         
         guard urlRequest != nil else { // Flow validation in url request
-            interactor?.on(api: api, error: CustomError(description: ErrorMessage.list.serverError, code: StatusCode.ServerError.rawValue))
+            interactor?.on(api: api, error: CustomError(description: ErrorMessage.list.serverError.localize(), code: StatusCode.ServerError.rawValue))
             return
         }
-        
-        
+
         // Setting Secret Key to Identify the response Api
         
         urlRequest?.addValue(api.rawValue, forHTTPHeaderField: WebConstants.string.secretKey)
@@ -287,13 +266,14 @@ class Webservice : PostWebServiceProtocol {
         urlRequest?.addValue(WebConstants.string.bearer+String.removeNil(User.main.accessToken), forHTTPHeaderField: WebConstants.string.Authorization)
         
         Alamofire.request(urlRequest!).validate(statusCode: StatusCode.success.rawValue..<StatusCode.multipleResponse.rawValue).responseJSON { (response) in
+            
             let api = response.request?.value(forHTTPHeaderField: WebConstants.string.secretKey) ?? .Empty
             switch response.result{
                 
             case .failure(let err):
-                print("At Webservice Response  at ",api,"   ",err, response.response?.statusCode ?? 0)
+                print("At Webservice Response  at ",api,"   ",err)
             case .success(let val):
-                print("At Webservice Response ",api,"   ",val, response.response?.statusCode ?? 0)
+                print("At Webservice Response ",api,"   ",val)
             }
             
             self.send(response)
@@ -305,8 +285,7 @@ class Webservice : PostWebServiceProtocol {
     
     // MARK:- Send Api with Image
     
-    private func send(api: Base, imageData: [String:Data]?, parameters: [String : Any]?){
-        
+    private func send(api: Base, imageData: [String:Data]?, data: Data?){
         
         guard let url = URL(string: baseUrl+api.rawValue) else {  // Validating Url
             print("Invalid Url")
@@ -314,28 +293,22 @@ class Webservice : PostWebServiceProtocol {
         }
         
         var headers = HTTPHeaders()
-        
         headers.updateValue(api.rawValue, forKey: WebConstants.string.secretKey)
         headers.updateValue(WebConstants.string.multipartFormData, forKey: WebConstants.string.Content_Type)
         headers.updateValue(WebConstants.string.XMLHttpRequest, forKey: WebConstants.string.X_Requested_With)
         headers.updateValue(WebConstants.string.bearer+String.removeNil(User.main.accessToken), forKey: WebConstants.string.Authorization)
         
-        
         Alamofire.upload(multipartFormData: { (multipartFormData) in
-            
-            for (key, value) in parameters ?? [:]{
-                multipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key)
+            if data != nil, let dictionary = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary, dictionary != nil {
+                for (param) in (dictionary!) {
+                    multipartFormData.append("\(param.value)".data(using: String.Encoding.utf8)!, withName: "\(param.key)")
+                }
             }
-            
-            
             if let imageArray = imageData{
-                
                 for array in imageArray {
                     multipartFormData.append(array.value, withName: array.key, fileName: "image.png", mimeType: "image/png")
                 }
-                
             }
-            
             
         }, usingThreshold: UInt64.init(), to: url, method: .post, headers: headers) { (result) in
             switch result{
@@ -362,19 +335,17 @@ class Webservice : PostWebServiceProtocol {
     
     private func setCrashLog(base : Base){
         
-//        if let fName = User.main.firstName, let lName = User.main.lastName {
-//            Crashlytics.sharedInstance().setUserName(fName+" "+lName)
-//        }
-//        if let email = User.main.email {
-//            Crashlytics.sharedInstance().setUserEmail(email)
-//        }
-//        if let idVal = User.main.id {
-//            Crashlytics.sharedInstance().setUserIdentifier("\(idVal)")
-//        }
-//        Crashlytics.sharedInstance().setObjectValue(base.rawValue, forKey: "Last Api Called")
+        //        Crashlytics.sharedInstance().setUserName(User.main.firstname+User.main.lastName)
+        //        Crashlytics.sharedInstance().setUserEmail(User.main.email)
+        //        Crashlytics.sharedInstance().setUserIdentifier("\(User.main.id)")
+        //        Crashlytics.sharedInstance().setObjectValue(base.rawValue, forKey: "Last Api Called")
+        
     }
     
     
     
 }
+
+
+
 

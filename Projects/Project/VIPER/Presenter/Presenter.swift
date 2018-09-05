@@ -18,7 +18,7 @@ class Presenter  {
 //MARK:- Implementation PostPresenterInputProtocol
 
 extension Presenter : PostPresenterInputProtocol {
-
+    
     func put(api: Base, url: String, data: Data?) {
         interactor?.send(api: api, url: url, data: data, type: .PUT)
     }
@@ -32,23 +32,20 @@ extension Presenter : PostPresenterInputProtocol {
     }
     
     func post(api: Base, data: Data?) {
-        interactor?.send(api: api, data: data, paramters: nil, type: .POST)
+        interactor?.send(api: api, data: data, type: .POST)
     }
     
-    func get(api: Base, parameters: [String : Any]?) {
-        interactor?.send(api: api, data: nil, paramters: parameters, type: .GET)
+    func get(api: Base, data : Data?) {
+        interactor?.send(api: api, data: data, type: .GET)
     }
     
     func get(api : Base, url : String){
-        
         interactor?.send(api: api, url: url, data: nil, type: .GET)
-
     }
     
-    func post(api: Base, imageData: [String : Data]?, parameters: [String : Any]?) {
-        interactor?.send(api: api, imageData: imageData, parameters: parameters)
+    func post(api: Base, imageData: [String : Data]?, data : Data?) {
+        interactor?.send(api: api, imageData: imageData, data : data)
     }
-   
     
     func post(api: Base, url: String, data: Data?) {
         interactor?.send(api: api, url: url, data: data,type: .POST)

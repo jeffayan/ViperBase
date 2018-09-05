@@ -78,20 +78,22 @@ class Common {
     class func setFont(to field :Any, isTitle : Bool = false, size : CGFloat = 0) {
         
         let customSize = size > 0 ? size : (isTitle ? 16 : 14)
+        let font = UIFont(name: isTitle ? FontCustom.bold.rawValue : FontCustom.meduim.rawValue, size: customSize)
         
         switch (field.self) {
         case is UITextField:
-            (field as? UITextField)?.font = UIFont(name: isTitle ? FontCustom.avenier_Heavy.rawValue : FontCustom.avenier_Medium.rawValue, size: customSize)
+            (field as? UITextField)?.font = font
         case is UILabel:
-            (field as? UILabel)?.font = UIFont(name: isTitle ? FontCustom.avenier_Heavy.rawValue : FontCustom.avenier_Medium.rawValue, size: customSize)
+            (field as? UILabel)?.font = font
         case is UIButton:
-            (field as? UIButton)?.titleLabel?.font = UIFont(name: isTitle ? FontCustom.avenier_Heavy.rawValue : FontCustom.avenier_Medium.rawValue, size: customSize)
+            (field as? UIButton)?.titleLabel?.font = font
         case is UITextView:
-            (field as? UITextView)?.font = UIFont(name: isTitle ? FontCustom.avenier_Heavy.rawValue : FontCustom.avenier_Medium.rawValue, size: customSize)
+            (field as? UITextView)?.font = font
         default:
             break
         }
     }
+    
     
     // MARK:- Make Call
     class func call(to number : String?) {

@@ -20,21 +20,15 @@ class Interactor  {
 
 extension Interactor : PostInteractorInputProtocol {
     
+    func send(api: Base, imageData: [String : Data]?, data: Data?) {
+        webService?.retrieve(api: api,url: nil, data: data, imageData: imageData, type: .POST, completion: nil)
+    }
     func send(api: Base, url: String, data: Data?, type: HttpType) {
-      
-        webService?.retrieve(api: api,url: url, data: data, imageData: nil, paramters: nil, type: type, completion: nil)
-        
+        webService?.retrieve(api: api,url: url, data: data, imageData: nil, type: type, completion: nil)
     }
-    
-    func send(api: Base, data: Data?, paramters: [String : Any]?, type: HttpType) {
-        webService?.retrieve(api: api,url: nil, data: data, imageData: nil, paramters: paramters, type: type, completion: nil)
+    func send(api: Base, data: Data?, type: HttpType) {
+        webService?.retrieve(api: api, url: nil, data: data, imageData: nil, type: type, completion: nil)
     }
-    
-    func send(api: Base, imageData: [String : Data]?, parameters: [String : Any]?) {
-        webService?.retrieve(api: api,url: nil, data: nil, imageData: imageData, paramters: parameters, type: .POST, completion: nil)
-    }
-    
-    
     
 }
 
@@ -47,12 +41,10 @@ extension Interactor : PostInteractorOutputProtocol {
         case .signUp:
             //self.presenter?.SendAuth(api: api, data: response)
             break
-
         default :
             break
             
         }
-        
     }
     
     func on(api: Base, error: CustomError) {

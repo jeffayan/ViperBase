@@ -10,14 +10,8 @@ import Foundation
 
 enum FontCustom : String {
     
-    case clanPro_Book = "ClanPro-Book"
-    case clanPro_Medium = "ClanPro-Medium"
-    case clanPro_NarrBook = "ClanPro-NarrBook"
-    case clanPro_NarrMedium = "ClanPro-NarrMedium"
-    case clanPro_NarrNews = "ClanPro-NarrNews"
-    case clanPro_News = "ClanPro-News"
-    case avenier = "Avenir"
-    case avenier_Medium = "Avenir-Medium"
-    case avenier_Heavy = "Avenir-Heavy"
+    case meduim = "Avenir-Medium"
+    case bold = "Avenir-Heavy"
     
 }
+
