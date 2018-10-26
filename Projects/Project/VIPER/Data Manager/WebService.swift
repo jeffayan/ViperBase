@@ -249,7 +249,9 @@ class Webservice : PostWebServiceProtocol {
             urlRequest = URLRequest(url: url!)
         }
         
-        urlRequest?.httpBody = data
+        if type != .GET {
+             urlRequest?.httpBody = data
+        }
         urlRequest?.httpMethod = type.rawValue
         
         
